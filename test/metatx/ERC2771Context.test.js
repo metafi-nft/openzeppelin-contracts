@@ -17,7 +17,9 @@ const version = '0.0.1';
 contract('ERC2771Context', function (accounts) {
   beforeEach(async function () {
     this.forwarder = await MinimalForwarder.new();
+    this.forwarder2 = await MinimalForwarder.new();
     this.recipient = await ERC2771ContextMock.new(this.forwarder.address);
+    await this.recipient.setTrustedForwarder(this.forwarder2.address);
 
     this.domain = {
       name,
@@ -38,8 +40,9 @@ contract('ERC2771Context', function (accounts) {
     };
   });
 
-  it('recognize trusted forwarder', async function () {
+  it('recognize trusted forwarders', async function () {
     expect(await this.recipient.isTrustedForwarder(this.forwarder.address));
+    expect(await this.recipient.isTrustedForwarder(this.forwarder2.address));
   });
 
   context('when called directly', function () {

@@ -14,7 +14,6 @@ abstract contract ERC2771Context is Context, Ownable {
 
     function setTrustedForwarder(address forwarder) public onlyOwner {
         _trustedForwarders[forwarder] = true;
-        
     }
 
     function isTrustedForwarder(address forwarder) public view virtual returns (bool) {
