@@ -4,21 +4,24 @@
 pragma solidity ^0.8.9;
 
 import "../utils/Context.sol";
+import "../access/Ownable.sol";
 
 /**
  * @dev Context variant with ERC2771 support.
  */
-abstract contract ERC2771Context is Context {
+abstract contract ERC2771Context is Context, Ownable {
     /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
-    address private immutable _trustedForwarder;
+    // address[] private _trustedForwarders;
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor(address trustedForwarder) {
-        _trustedForwarder = trustedForwarder;
+    mapping(address => bool) private _trustedForwarders;
+
+    function setTrustedForwarder(address forwarder) public onlyOwner {
+        _trustedForwarders[forwarder] = true;
+        
     }
 
     function isTrustedForwarder(address forwarder) public view virtual returns (bool) {
-        return forwarder == _trustedForwarder;
+        return _trustedForwarders[forwarder];
     }
 
     function _msgSender() internal view virtual override returns (address sender) {
