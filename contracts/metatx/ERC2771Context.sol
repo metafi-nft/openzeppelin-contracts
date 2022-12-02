@@ -10,9 +10,6 @@ import "../access/Ownable.sol";
  * @dev Context variant with ERC2771 support.
  */
 abstract contract ERC2771Context is Context, Ownable {
-    /// @custom:oz-upgrades-unsafe-allow state-variable-immutable
-    // address[] private _trustedForwarders;
-
     mapping(address => bool) private _trustedForwarders;
 
     function setTrustedForwarder(address forwarder) public onlyOwner {
